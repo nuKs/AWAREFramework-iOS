@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		4F00EBD320B2E616006EB9E6 /* MyCoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4F00EBD120B2E616006EB9E6 /* MyCoreDataModel.xcdatamodeld */; };
 		4F00EBF020B310F3006EB9E6 /* SampleSensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F00EBEF20B310F3006EB9E6 /* SampleSensor.m */; };
-		4F00EBF320B33A3E006EB9E6 /* EntitySample+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F00EBF120B33A3E006EB9E6 /* EntitySample+CoreDataProperties.m */; };
 		4F251D8320CAB8A7006443FC /* AWAREFramework.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 4F251D8220CAB8A7006443FC /* AWAREFramework.podspec */; };
 		4F3B188320718E4800364E9B /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F3B188220718E4800364E9B /* ExternalAccessory.framework */; };
 		4FC2FF4A216DD05800B840ED /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC2FF49216DD05800B840ED /* HealthKit.framework */; };
@@ -430,8 +429,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-AWAREFramework_Example/Pods-AWAREFramework_Example-frameworks.sh",
 				"${PODS_ROOT}/../../AWAREFramework/Frameworks/StudentLifeAudio.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaAsyncSocket/CocoaAsyncSocket.framework",
-				"${BUILT_PRODUCTS_DIR}/EAIntroView/EAIntroView.framework",
-				"${BUILT_PRODUCTS_DIR}/EARestrictedScrollView/EARestrictedScrollView.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMOAuth2/GTMOAuth2.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
@@ -444,8 +441,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/StudentLifeAudio.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaAsyncSocket.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EAIntroView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EARestrictedScrollView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMOAuth2.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
@@ -470,7 +465,6 @@
 				6003F5A7195388D20070C39A /* AWAREFrameworkViewController.m in Sources */,
 				4F00EBD320B2E616006EB9E6 /* MyCoreDataModel.xcdatamodeld in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				4F00EBF320B33A3E006EB9E6 /* EntitySample+CoreDataProperties.m in Sources */,
 				4F00EBF020B310F3006EB9E6 /* SampleSensor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
