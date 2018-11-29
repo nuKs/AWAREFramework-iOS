@@ -50,6 +50,7 @@ Pod::Spec.new do |s|
   s.dependency 'SVProgressHUD'
   # s.dependency 'EAIntroView', '~> 2.9.0'
   s.dependency 'TPCircularBuffer'
+  s.dependency 'EncryptedCoreData', :git => 'https://github.com/project-imas/encrypted-core-data.git'
   
   s.ios.vendored_frameworks = 'AWAREFramework/Frameworks/StudentLifeAudio.framework'
   
