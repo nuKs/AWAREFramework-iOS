@@ -18,6 +18,11 @@
 //    fileURL = [fileURL URLByAppendingPathComponent:@"aware.sqlite"];
 //    self.sqliteFileURL = fileURL;
     
+    // Set encryption (at launch time, before core activate, required !)
+    CoreDataHandler * coreDataHandler = [CoreDataHandler sharedHandler];
+    coreDataHandler.sqliteEncryptionKey = @"test";
+    coreDataHandler.sqliteFileURL = [[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:@"test.sqlite"];
+    
     AWARECore * core = [AWARECore sharedCore];
     [core activate];
 //    [core requestPermissionForBackgroundSensing];

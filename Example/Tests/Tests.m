@@ -46,6 +46,52 @@
     [super tearDown];
 }
 
+- (void) testEncryption {
+    Accelerometer * sensor = [[Accelerometer alloc] init];
+
+    // @note we have commented the below lines as tests will fail in iOS simulator
+    // since there is no accelerator !
+    /*
+    BOOL startState = [sensor startSensor];
+    XCTAssertTrue(startState);
+    XCTAssertEqual(sensor.sensingInterval, MOTION_SENSOR_DEFAULT_SENSING_INTERVAL_SECOND);
+    XCTAssertEqual(sensor.savingInterval,  MOTION_SENSOR_DEFAULT_DB_WRITE_INTERVAL_SECOND);
+    BOOL stopState = [sensor stopSensor];
+    XCTAssert(stopState);
+    */
+    
+    // @note Encryption is being set in the host app delegate method instead of
+    // test as it's required to be set at launch time, before the sqlite db is
+    // created. Password is "test" (as well as db name).
+    
+    ////// Sync /////
+    sensor = [[Accelerometer alloc] initWithAwareStudy:study dbType:AwareDBTypeSQLite];
+    // sensor.storage.saveInterval = 0;
+    NSArray * dataset = [self getDataset];
+    sensor.storage.saveInterval = 0;
+    [sensor.storage setDebug:YES];
+    [sensor.storage saveDataWithArray:dataset buffer:NO saveInMainThread:YES];
+    XCTestExpectation *syncExpectation = [self expectationWithDescription:@"DBSyncTestBlock"];
+    
+    [NSTimer scheduledTimerWithTimeInterval:1 repeats:NO block:^(NSTimer * _Nonnull timer) {
+        [sensor.storage startSyncStorageWithCallBack:^(NSString *name, double progress, NSError * _Nullable error) {
+            if (progress == 1) {
+                [syncExpectation fulfill];
+                XCTAssertEqual(progress, 1);
+            }
+            NSLog(@"[%@] %f", name, progress);
+            if(error!=nil){
+                NSLog(@"%@",error.debugDescription);
+            }
+            // XCTAssertNil(error);
+        }];
+    }];
+    
+    [self waitForExpectationsWithTimeout:30 handler:^(NSError * _Nullable error) {
+        // XCTAssertNil(error, @"has error.");
+    }];
+}
+
 - (void) testAccelerometer {
     Accelerometer * sensor = [[Accelerometer alloc] init];
     BOOL startState = [sensor startSensor];

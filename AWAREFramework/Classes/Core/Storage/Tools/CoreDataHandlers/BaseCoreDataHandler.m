@@ -8,6 +8,7 @@
 #import "BaseCoreDataHandler.h"
 #import <CoreData/CoreData.h>
 #import <UserNotifications/UserNotifications.h>
+#import "EncryptedStore.h"
 
 @implementation BaseCoreDataHandler
 
@@ -16,6 +17,7 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize status = _status;
 @synthesize sqliteFileURL;
+@synthesize sqliteEncryptionKey;
 
 - (instancetype)init{
     self = [super init];
@@ -249,29 +251,37 @@
     }
     
     // Create the coordinator and store
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     // NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"AWARE.sqlite"];
-    NSError *error = nil;
-    NSString *failureReason = @"There was an error creating or loading the application's saved data.";
-    
     
     /*********** options  ***********/
-    NSDictionary *options = nil;
+    if (self.sqliteFileURL == nil) {
+        // @warning `isDirectory: FALSE` is required as this method's call otherwise read file metadata (which may be encrypted)
+        self.sqliteFileURL  = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"AWARE.sqlite" isDirectory: FALSE];
+    }
+
+    // Encrypt db using envrypted-core-data (@warning README.md doc is deprecated, have a look at source files)
+    NSError *error = nil;
+    NSMutableDictionary *options1 = [NSMutableDictionary dictionary];
+    if (self.sqliteFileURL != nil) {
+        [options1 setValue:self.sqliteFileURL forKey:EncryptedStore.optionDatabaseLocation];
+    }
+    if (self.sqliteEncryptionKey != nil) {
+        [options1 setValue:self.sqliteEncryptionKey forKey:EncryptedStore.optionPassphraseKey];
+    }
+    NSDictionary *options2 = nil;
     if ([self isNeedMigration]) {
-        options = [NSDictionary dictionaryWithObjectsAndKeys:
+        options2 = [NSDictionary dictionaryWithObjectsAndKeys:
                    [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                    [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
                    nil];
     }
     
-    if (self.sqliteFileURL == nil) {
-        self.sqliteFileURL  = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"AWARE.sqlite"];
-    }
-    if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:self.sqliteFileURL options:options error:&error]) {
+    _persistentStoreCoordinator = [EncryptedStore makeStoreWithOptions:options1 managedObjectModel:[self managedObjectModel]];
+    if (![self.persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:self.sqliteFileURL options:options2 error:&error]) {
         // Report any error we got.
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         dict[NSLocalizedDescriptionKey] = @"Failed to initialize the application's saved data";
-        dict[NSLocalizedFailureReasonErrorKey] = failureReason;
+        dict[NSLocalizedFailureReasonErrorKey] = @"There was an error creating or loading the application's saved data.";
         dict[NSUnderlyingErrorKey] = error;
         error = [NSError errorWithDomain:@"YOUR_ERROR_DOMAIN" code:9999 userInfo:dict];
         // Replace this with code to handle the error appropriately.

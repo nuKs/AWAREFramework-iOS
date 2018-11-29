@@ -34,11 +34,11 @@ Pod::Spec.new do |s|
 
   s.source_files = ['AWAREFramework/Classes/**/*']
   
-   s.resource_bundles = {
-     'AWAREFramework' => ['AWAREFramework/Assets/**/*.png','AWAREFramework/Assets/*.xib','AWAREFramework/Assets/**/*.jpg', 'AWAREFramework/Assets/**/*.xcdatamodeld', 'AWAREFramework/Assets/**/*.xcassets']
-   }
-   
-   s.resources = 'AWAREFramework/Assets/**/*.xcdatamodeld'
+  s.resource_bundles = {
+    'AWAREFramework' => ['AWAREFramework/Assets/**/*.png','AWAREFramework/Assets/*.xib','AWAREFramework/Assets/**/*.jpg', 'AWAREFramework/Assets/**/*.xcdatamodeld', 'AWAREFramework/Assets/**/*.xcassets']
+  }
+
+  s.resources = 'AWAREFramework/Assets/**/*.xcdatamodeld'
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   s.frameworks = 'UIKit', 'MapKit', 'CoreData', 'CoreTelephony', 'CoreLocation', 'CoreMotion', 'CoreBluetooth', 'EventKit', 'EventKitUI', 'UserNotifications', 'EventKit', 'EventKitUI','Accelerate', 'AudioToolbox','AVFoundation','GLKit'
@@ -50,6 +50,13 @@ Pod::Spec.new do |s|
   s.dependency 'SVProgressHUD'
   # s.dependency 'EAIntroView', '~> 2.9.0'
   s.dependency 'TPCircularBuffer'
+  
+  # Attempt to fix "implicit declaration of function 'sqlite3_rekey' is invalid in C99", not enough
+  # doesn't seem to be required as it's already set in the underlying EncryptedCoreData podspec
+  # s.xcconfig = {
+  #     'OTHER_CFLAGS'  => '$(inherited) -DSQLITE_HAS_CODEC -DSQLCIPHER_CRYPTO_CC'
+  # }
+  s.dependency 'EncryptedCoreDataNuks'
   
   s.ios.vendored_frameworks = 'AWAREFramework/Frameworks/StudentLifeAudio.framework'
   

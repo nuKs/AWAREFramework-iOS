@@ -20,6 +20,7 @@ typedef enum: NSInteger {
 @property AwareSQLiteStatus status;
 
 @property (strong, nonatomic) NSURL *sqliteFileURL;
+@property (strong, nonatomic) NSString *sqliteEncryptionKey; // Change this at launch time to encrypt the database
 
 @property (readonly, strong, nonatomic) NSManagedObjectContext * managedObjectContext;
 @property (readonly, strong, nonatomic) NSManagedObjectModel   * managedObjectModel;
